@@ -1,0 +1,182 @@
+/* Global responsive tweaks that complement Bootstrap.
+   Keep this file small and focused.
+*/
+
+:root {
+  --app-max-width: 1140px;
+
+  /* Brand palette */
+  --lego-red: #d01012;
+  --lego-yellow: #ffd500;
+  --lego-blue: #0055bf;
+  --ink: #0f172a;
+
+  /* UI tokens */
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --border: rgba(15, 23, 42, 0.12);
+  --shadow-sm: 0 10px 30px rgba(2, 6, 23, 0.08);
+  --shadow-md: 0 18px 50px rgba(2, 6, 23, 0.12);
+
+  --radius-md: 16px;
+  --radius-sm: 12px;
+}
+
+/* Background with subtle "stud" dots */
+body.bg-light {
+  background:
+    radial-gradient(circle at 12px 12px, rgba(15, 23, 42, 0.06) 2px, transparent 2px) 0 0/32px 32px,
+    linear-gradient(180deg, #f8fafc 0%, #eef2ff 45%, #f8fafc 100%);
+  color: var(--ink);
+}
+
+/* Improve default font rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent long content from breaking layout */
+.card-title,
+.card-text,
+.lead,
+.alert {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Navbar improvements */
+.navbar {
+  box-shadow: var(--shadow-sm);
+}
+
+.navbar.bg-primary {
+  background: linear-gradient(135deg, var(--lego-blue), #1d4ed8) !important;
+}
+
+.navbar .navbar-brand {
+  letter-spacing: 0.2px;
+}
+
+/* Card look */
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.card.shadow,
+.card.shadow-sm {
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.card-header {
+  border-top-left-radius: calc(var(--radius-md) - 1px) !important;
+  border-top-right-radius: calc(var(--radius-md) - 1px) !important;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Buttons */
+.btn {
+  border-radius: 12px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--lego-blue), #2563eb);
+  border: none;
+}
+
+.btn-primary:hover {
+  filter: brightness(0.98);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  border: none;
+}
+
+.btn-outline-secondary {
+  border-color: rgba(15, 23, 42, 0.18);
+}
+
+.btn-outline-danger {
+  border-color: rgba(208, 16, 18, 0.45);
+}
+
+/* Forms */
+.form-control,
+.form-select {
+  border-radius: 12px;
+  border-color: rgba(15, 23, 42, 0.14);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: rgba(0, 85, 191, 0.6);
+  box-shadow: 0 0 0 0.25rem rgba(0, 85, 191, 0.15);
+}
+
+/* Set grid cards */
+.set-card {
+  height: 100%;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.set-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md) !important;
+}
+
+/* Chat styling (details page) */
+.chat-scroll {
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.78);
+  border-radius: var(--radius-md);
+  padding: 0.75rem;
+}
+
+.chat-msg {
+  border: 0;
+  background: transparent;
+  box-shadow: none !important;
+}
+
+.chat-msg .card-body {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.08);
+}
+
+/* Make the AI response feel a bit "special" */
+.chat-msg .card-body hr {
+  opacity: 0.08;
+}
+
+/* Slightly better tap targets on small screens */
+@media (max-width: 575.98px) {
+  .btn {
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+  }
+
+  .navbar .navbar-brand {
+    font-size: 1.05rem;
+  }
+}
+
+/* =============================
+   Full-viewport layout utilities
+   ============================= */
+:root { --app-vh: 100vh; }
+@supports (height: 100dvh) {
+  :root { --app-vh: 100dvh; }
+}
+
+html, body {
+  height: 100%;
+}
+
+/* Apply to body or a wrapper to ensure full-screen layout that behaves well on mobile */
+.app-vh {
+  min-height: var(--app-vh);
+}
