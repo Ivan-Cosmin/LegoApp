@@ -18,13 +18,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/set")
-public class SetChatController {
+public class ChatController {
 
     private final LegoSetRepository legoSetRepository;
     private final LegoAiService legoAiService;
     private final ChatHistoryRepository chatHistoryRepository;
 
-    public SetChatController(LegoSetRepository legoSetRepository,
+    public ChatController(LegoSetRepository legoSetRepository,
                              LegoAiService legoAiService,
                              ChatHistoryRepository chatHistoryRepository) {
         this.legoSetRepository = legoSetRepository;
