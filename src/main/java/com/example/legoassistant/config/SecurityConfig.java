@@ -19,7 +19,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 // Allow access to the login page + static assets without authentication
-                .requestMatchers("/login", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
+                .requestMatchers("/login", "/css/**", "/js/**", "/images/**", "/webjars/**", "/actuator/health", "/actuator/info").permitAll()
                 // Logout is handled by Spring Security (POST /logout)
                 .requestMatchers("/logout").permitAll()
                 // Everything else requires a logged-in user

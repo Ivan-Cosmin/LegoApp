@@ -81,9 +81,26 @@ public class ChatController {
             session.setAttribute("role", ask.getRole());
         }
 
-        String answer = legoAiService.askAssistant(id, ask.getQuestion(), ask.getTone(), ask.getRole());
-        redirectAttributes.addFlashAttribute("aiResponse", answer);
-        redirectAttributes.addFlashAttribute("lastQuestion", ask.getQuestion());
+        // PRINDEM EROAREA AICI
+        try {
+            String answer = legoAiService.askAssistant(id, ask.getQuestion(), ask.getTone(), ask.getRole());
+            redirectAttributes.addFlashAttribute("aiResponse", answer);
+            redirectAttributes.addFlashAttribute("lastQuestion", ask.getQuestion());
+        } catch (Exception e) {
+            // Verificam daca este o eroare de limitare (429) sau alta eroare
+            String errorMessage;
+            if (e.getMessage() != null && e.getMessage().contains("429")) {
+                errorMessage = "🤖 The AI model is temporarily overloaded (too many requests). Please wait a few seconds and try again.";
+            } else if (e.getMessage() != null && e.getMessage().contains("401")) {
+                errorMessage = "🔑 The OpenRouter API key is incorrect or missing.";
+            } else {
+                errorMessage = "⚠️ An unexpected error occurred while communicating with the AI. Please try again.";
+            }
+
+            // Trimitem mesajul custom catre frontend
+            redirectAttributes.addFlashAttribute("error", errorMessage);
+        }
+
         return "redirect:/set/" + id;
     }
 
@@ -100,6 +117,20 @@ public class ChatController {
         long deleted = chatHistoryRepository.deleteByLegoSet_IdAndUser_Username(id, username);
         redirectAttributes.addFlashAttribute("message", "Cleared " + deleted + " chat messages.");
         return "redirect:/set/" + id;
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deleteSet(@PathVariable @Min(1) Long id, RedirectAttributes redirectAttributes) {
+        // 1. Stergem intai istoricul de chat asociat acestui set (altfel crapa baza de date)
+        chatHistoryRepository.deleteByLegoSet_Id(id);
+
+        // 2. Stergem setul efectiv din baza de date (va sterge automat si BuildingSteps datorita cascade=ALL)
+        legoSetRepository.deleteById(id);
+
+        // 3. Trimitem un mesaj de succes catre pagina principala
+        redirectAttributes.addFlashAttribute("message", "Setul LEGO a fost sters cu succes!");
+
+        return "redirect:/"; // Ne intoarcem pe pagina principala
     }
 }
 

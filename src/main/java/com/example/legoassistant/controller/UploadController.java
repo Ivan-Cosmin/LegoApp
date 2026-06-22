@@ -4,6 +4,8 @@ import com.example.legoassistant.dto.UploadSetRequest;
 import com.example.legoassistant.model.LegoSet;
 import com.example.legoassistant.repository.LegoSetRepository;
 import com.example.legoassistant.service.LegoAiService;
+import com.example.legoassistant.service.ManualUploadResult;
+import com.example.legoassistant.service.S3FileService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,10 +21,14 @@ public class UploadController {
 
     private final LegoSetRepository legoSetRepository;
     private final LegoAiService legoAiService;
+    private final S3FileService s3FileService;
 
-    public UploadController(LegoSetRepository legoSetRepository, LegoAiService legoAiService) {
+    public UploadController(LegoSetRepository legoSetRepository,
+                            LegoAiService legoAiService,
+                            S3FileService s3FileService) {
         this.legoSetRepository = legoSetRepository;
         this.legoAiService = legoAiService;
+        this.s3FileService = s3FileService;
     }
 
     @ModelAttribute("upload")
@@ -76,7 +82,8 @@ public class UploadController {
             set.setDescription("Uploaded Manual: " + originalFilename);
 
             set = legoSetRepository.save(set);
-            legoAiService.processAndIndexFile(set, file.getResource());
+            ManualUploadResult uploadResult = s3FileService.uploadManual(set, file);
+            legoAiService.processAndIndexFile(set, uploadResult.resource());
 
             redirectAttributes.addFlashAttribute("message", "Uploaded and Indexed Successfully!");
             return "redirect:/";

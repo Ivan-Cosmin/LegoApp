@@ -22,4 +22,8 @@ public interface ChatHistoryRepository extends JpaRepository<ChatHistory, Long> 
     @Modifying
     @Transactional
     long deleteByLegoSet_IdAndUser_Username(Long legoSetId, String username);
+
+    @Modifying
+    @Transactional
+    long deleteByLegoSet_Id(Long legoSetId);
 }
