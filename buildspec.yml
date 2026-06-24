@@ -1,4 +1,8 @@
 version: 0.2
+env:
+  parameter-store:
+    DOCKERHUB_USER: "dockerhub-user"
+    DOCKERHUB_PASS: "dockerhub-pass"
 
 phases:
   pre_build:
