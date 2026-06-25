@@ -1,0 +1,86 @@
+{
+  "pipeline": {
+    "name": "lego-pipeline",
+    "roleArn": "arn:aws:iam::245395156258:role/codepipeline-lego-role",
+    "artifactStore": {
+      "type": "S3",
+      "location": "lego-assistant-manuals-2026-v2"
+    },
+    "stages": [
+      {
+        "name": "Source",
+        "actions": [
+          {
+            "name": "Source",
+            "actionTypeId": {
+              "category": "Source",
+              "owner": "AWS",
+              "provider": "CodeStarSourceConnection",
+              "version": "1"
+            },
+            "outputArtifacts": [
+              {
+                "name": "SourceArtifact"
+              }
+            ],
+            "configuration": {
+              "ConnectionArn": "arn:aws:codestar-connections:eu-central-1:245395156258:connection/38e5157f-046a-4b10-9dc9-192fd9fbdb9e",
+              "FullRepositoryId": "Ivan-Cosmin/LegoApp",
+              "BranchName": "master"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Build",
+        "actions": [
+          {
+            "name": "Build",
+            "actionTypeId": {
+              "category": "Build",
+              "owner": "AWS",
+              "provider": "CodeBuild",
+              "version": "1"
+            },
+            "inputArtifacts": [
+              {
+                "name": "SourceArtifact"
+              }
+            ],
+            "outputArtifacts": [
+              {
+                "name": "BuildArtifact"
+              }
+            ],
+            "configuration": {
+              "ProjectName": "lego-build"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Deploy",
+        "actions": [
+          {
+            "name": "Deploy",
+            "actionTypeId": {
+              "category": "Deploy",
+              "owner": "AWS",
+              "provider": "ElasticBeanstalk",
+              "version": "1"
+            },
+            "inputArtifacts": [
+              {
+                "name": "BuildArtifact"
+              }
+            ],
+            "configuration": {
+              "ApplicationName": "lego-assistant",
+              "EnvironmentName": "lego-assistant-env"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

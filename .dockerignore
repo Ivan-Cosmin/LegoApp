@@ -1,0 +1,19 @@
+target/
+.git/
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Local runtime/data
+uploads/
+vector_store.json
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE/build caches
+.mvn/wrapper/maven-wrapper.jar
