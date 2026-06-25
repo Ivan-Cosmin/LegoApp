@@ -24,7 +24,7 @@
               }
             ],
             "configuration": {
-              "ConnectionArn": "arn:aws:codestar-connections:eu-central-1:245395156258:connection/38e5157f-046a-4b10-9dc9-192fd9fbdb9e",
+              "ConnectionArn":"arn:aws:codestar-connections:eu-central-1:245395156258:connection/4883b4ba-973f-449d-855f-bc36e30325b2",
               "FullRepositoryId": "Ivan-Cosmin/LegoApp",
               "BranchName": "master"
             }
